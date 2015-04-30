@@ -2,10 +2,10 @@
 
 using namespace std;
 
-static int xPos[4] = {0, 1, 0, -1};
-static int yPos[4] = {1, 0, -1, 0};
-
 class snailArray {
+    static const int xPos[4];
+    static const int yPos[4];
+
     public:
         snailArray();
         // N * N array
@@ -21,6 +21,9 @@ class snailArray {
         unsigned int mArraySize;
         int **snail;
 };
+
+const int snailArray::xPos[] = {0, 1, 0, -1};
+const int snailArray::yPos[] = {1, 0, -1, 0};
 
 snailArray::snailArray(void)
 {
