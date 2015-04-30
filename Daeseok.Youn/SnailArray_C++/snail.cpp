@@ -114,7 +114,7 @@ void snailArray::initializeArray(void)
 void snailArray::printArray(void)
 {
     cout << "Result : Snail Array - " << endl;
-    cout << "n : " << nArraySize << " m : " << mArraySize << endl;
+    cout << "N(" << nArraySize - 2 << ") X M(" << mArraySize - 2 << ")" << endl;
     for (int i = 0; i < nArraySize; i++) {
         for (int j = 0; j < nArraySize; j++) {
             if (snail[i][j] != -1)
