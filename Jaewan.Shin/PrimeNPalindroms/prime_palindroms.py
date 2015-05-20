@@ -19,7 +19,6 @@ class PrimeNPalindroms:
 			if remainder == 0:
 				return False
 
-
 		return True
 
 	def isPalindrome(self):
@@ -31,8 +30,6 @@ class PrimeNPalindroms:
 		for i in range(0, int(strLen/2)):
 
 			# print leftPos, strNum[leftPos] 
-			# print rightPos, strNum[rightPos] 
-
 			if strNum[leftPos] != strNum[rightPos]:
 				return False
 			leftPos += 1
@@ -40,38 +37,50 @@ class PrimeNPalindroms:
 
 		return True
 
-	# def isPalindromsByStr(self):
-
 
 # prime number 798823117
 def main(args):
 	if len(args) < 2:
-		print "ex) python snail.py [number]"
-		print "    python snail.py 5"
+		print "ex) python prime_palindromes.py [number]"
+		print "    python prime_palindromes.py 798823117"
+		print "    python prime_palindromes.py 12321"
 		return
 
 	num = int(args[1])
 
-	while True :
-		num += 1
-		pNp = PrimeNPalindroms(num)
+	pNp = PrimeNPalindroms(num)
+	isPrime = pNp.isPrimeNumber();
 
-		isPalindromeByStr = pNp.isPalindrome()
-		if isPalindromeByStr == False:
-			continue	
+	str = "prime number"
+	if isPrime:
+		str = args[1] + " is a " + str
+	else:
+		str = args[1] + " is not a " + str
+	print str
+ 
+	isPalindrome = pNp.isPalindrome();
+	str = "palindrome"
+	if isPalindrome:
+		str = args[1] + " is a " + str
+	else:
+		str = args[1] + " is not a " + str
+	print str
 
-		isPrime = pNp.isPrimeNumber()
-		if isPrime == False:
-			continue
-		break
+	# while True:
+	# 	num += 1
+	# 	pNp = PrimeNPalindroms(num)
 
-	print num
+	# 	isPalindromeByStr = pNp.isPalindrome()
+	# 	if isPalindromeByStr == False:
+	# 		continue	
 
-	# str = "prime number"
-	# if isPrime:
-	# 	str = args[1] + " is a " + str
-	# else:
-	# 	str = args[1] + " is not a " + str
+	# 	isPrime = pNp.isPrimeNumber()
+	# 	if isPrime == False:
+	# 		continue
+	# 	break
+
+	# print num
+
 
 
 main(sys.argv)
