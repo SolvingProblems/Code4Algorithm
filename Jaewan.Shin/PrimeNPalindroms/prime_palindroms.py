@@ -9,7 +9,7 @@ class PrimeNPalindroms:
 	def isPrimeNumber(self):
 
 		if self.__num == 1 or self.__num == 2:
-			return True;
+			return True
 
 		maxNum = int(self.__num**0.5)
 
