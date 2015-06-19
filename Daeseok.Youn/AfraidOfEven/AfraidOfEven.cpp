@@ -30,7 +30,6 @@ public:
             i++;
         }
 
-        cout << "diff : " << diff << endl;
         if (diff != 0 && seq.at(0) + diff != seq.at(1))
             seq.at(0) = seq.at(1) - diff;
         if (diff != 0 &&
