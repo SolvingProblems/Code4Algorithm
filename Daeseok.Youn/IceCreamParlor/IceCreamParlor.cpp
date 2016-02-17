@@ -75,11 +75,8 @@ class IceCreamParlor {
                 int temp = datas.at(index);
                 int choosenIndex;
 
-                cout << "index : " << index << " data : " << temp << endl;
-                cout << "remain amount : " << amount - temp << endl;
                 choosenIndex = findNumFromBinTree(index, amount - temp);
 
-                cout << "choose : " << choosenIndex << endl;
                 if (choosenIndex > 0) {
                     cout << index + 1 << " " << choosenIndex + 1 << endl;
                     break;
