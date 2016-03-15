@@ -10,6 +10,8 @@ using namespace std;
 
 #define DEFAULT_NUM_LENGTH  64
 #define BASE    10
+#define CHARTONUM(type, x)  ((type)((x) - '0'))
+#define NUMTOCHAR(x)  ((x) + '0')
 
 class BigInteger {
 public:
@@ -32,7 +34,10 @@ public:
     }
 
     void showNumber() {
-        for (int i = curMaxIndex - 1; i >=0; i--) {
+        if (CHARTONUM(int, bigNumber[numLength - 1]) != 0)
+            cout << "-";
+
+        for (int i = curMaxIndex - 1; i >= 0; i--) {
             cout << bigNumber[i];
         }
         cout << endl;
@@ -41,8 +46,8 @@ public:
     void addAndSave(const BigInteger Big1, const BigInteger Big2)
     {
         setNumber(0);
-        curMaxIndex = internalAdd(Big1.bigNumber, Big1.curMaxIndex,
-                                  Big2.bigNumber, Big2.curMaxIndex,
+        curMaxIndex = internalAdd(Big1.bigNumber, Big1.curMaxIndex, Big1.bigNumber[Big1.numLength - 1],
+                                  Big2.bigNumber, Big2.curMaxIndex, Big2.bigNumber[Big2.numLength - 1],
                                   bigNumber);
     }
 
@@ -54,7 +59,7 @@ private:
 protected:
     void setAllZero() {
         for (int i = 0; i < numLength; i++) {
-            bigNumber[i] = 0 + '0';
+            bigNumber[i] = NUMTOCHAR(0);
         }
     }
 
@@ -64,8 +69,11 @@ protected:
 
         clearNumber();
 
+        if (number < 0)
+            bigNumber[numLength - 1] = NUMTOCHAR(1);
+
         do {
-            bigNumber[curMaxIndex++] = (char)((number % BASE) + '0');
+            bigNumber[curMaxIndex++] = NUMTOCHAR(number % BASE);
             number /= BASE;
         } while(number && curMaxIndex < numLength - 1);
     }
@@ -85,8 +93,8 @@ protected:
         }
     }
 
-    int internalAdd(const char* op1, const int op1CurMax,
-                    const char* op2, const int op2CurMax,
+    int internalAdd(const char* op1, const int op1CurMax, const char op1Sign,
+                    const char* op2, const int op2CurMax, const char op2Sign,
                     char* result)
     {
         int calMax = op1CurMax > op2CurMax ? op1CurMax : op2CurMax;
@@ -94,11 +102,16 @@ protected:
         int i = 0;
 
         for (i = 0; i < calMax; i++) {
-            int temp = ((op1[i] - '0') + (op2[i] - '0')) + carry;
+            int op1Num = (CHARTONUM(int, op1Sign)) != 0 ? (-1) * CHARTONUM(int, op1[i]) :
+                                                     CHARTONUM(int, op1[i]);
+            int op2Num = (CHARTONUM(int, op2Sign)) != 0 ? (-1) * CHARTONUM(int, op2[i]) :
+                                                     CHARTONUM(int, op2[i]);
+
+            int temp = op1Num + op2Num + carry;
 
             carry = temp / 10;
 
-            result[i] = (char)(temp + '0');
+            result[i] = NUMTOCHAR(temp);
         }
 
         if (carry != 0) {
