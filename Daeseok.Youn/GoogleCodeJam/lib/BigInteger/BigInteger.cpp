@@ -8,6 +8,8 @@ using namespace std;
  * 0 is positive, 1 is negative.
  */
 
+#undef DEBUG
+
 #define DEFAULT_NUM_LENGTH  64
 #define BASE    10
 #define CHARTONUM(type, x)  ((type)((x) - '0'))
@@ -51,6 +53,25 @@ public:
                                   bigNumber);
     }
 
+    void setNumber(long number) {
+        int signMul = 1;
+
+        if (bigNumber == NULL)
+            allocNumberRoom();
+
+        clearNumber();
+
+        if (number < 0) {
+            bigNumber[numLength - 1] = NUMTOCHAR(1);
+            signMul = -1;
+        }
+
+        do {
+            bigNumber[curMaxIndex++] = NUMTOCHAR((signMul * number) % BASE);
+            number /= BASE;
+        } while(number && curMaxIndex < numLength - 1);
+    }
+
 private:
     unsigned int numLength;
     char *bigNumber;
@@ -62,22 +83,6 @@ protected:
             bigNumber[i] = NUMTOCHAR(0);
         }
     }
-
-    void setNumber(long number) {
-        if (bigNumber == NULL)
-            allocNumberRoom();
-
-        clearNumber();
-
-        if (number < 0)
-            bigNumber[numLength - 1] = NUMTOCHAR(1);
-
-        do {
-            bigNumber[curMaxIndex++] = NUMTOCHAR(number % BASE);
-            number /= BASE;
-        } while(number && curMaxIndex < numLength - 1);
-    }
-
 
     void allocNumberRoom() {
         bigNumber = new char[numLength];
@@ -100,33 +105,84 @@ protected:
         int calMax = op1CurMax > op2CurMax ? op1CurMax : op2CurMax;
         int carry = 0;
         int i = 0;
+        //cout << "sign(op1) : " << op1Sign << " sign(op2) : " << op2Sign << endl;
+        if (op1Sign == op2Sign) {
+            for (i = 0; i < calMax; i++) {
+                int op1Num = CHARTONUM(int, op1[i]);
+                int op2Num = CHARTONUM(int, op2[i]);
 
-        for (i = 0; i < calMax; i++) {
-            int op1Num = (CHARTONUM(int, op1Sign)) != 0 ? (-1) * CHARTONUM(int, op1[i]) :
-                                                     CHARTONUM(int, op1[i]);
-            int op2Num = (CHARTONUM(int, op2Sign)) != 0 ? (-1) * CHARTONUM(int, op2[i]) :
-                                                     CHARTONUM(int, op2[i]);
+                int temp = op1Num + op2Num + carry;
 
-            int temp = op1Num + op2Num + carry;
+                carry = temp / BASE;
 
-            carry = temp / 10;
+                result[i] = NUMTOCHAR(temp % 10);
+            }
 
-            result[i] = NUMTOCHAR(temp);
-        }
+            if (carry != 0) {
+                result[i]++;
+                calMax++;
+            }
 
-        if (carry != 0) {
-            result[i] = carry;
-            calMax++;
+            result[numLength - 1] = op1Sign;
+        } else {
+            // which is the bigger value without sign?
+            const char *big = NULL, *small = NULL;
+            char signValue = 0;
+
+            for (i = calMax; i >= 0; i--) {
+                if (op1[i] < op2[i]) {
+                    big = op2;
+                    small = op1;
+                    signValue = op2Sign;
+                } else {
+                    big = op1;
+                    small = op2;
+                    signValue = op1Sign;
+                }
+
+                if (big != NULL)
+                    break;
+            }
+
+            if (big == NULL) {
+            }
+
+            for (i = 0; i < calMax; i++) {
+                int op1Num = CHARTONUM(int, big[i]);
+                int op2Num = CHARTONUM(int, small[i]);
+
+                int temp = op1Num - op2Num + carry;
+                cout << "op1Num : " << op1Num << " op2Num : " << op2Num << " result : " << temp << endl;
+                cout << "carry : " << carry << endl;
+                if (temp < 0) {
+                    temp = BASE + temp;
+                    carry = -1;
+                } else {
+                    carry = 0;
+                }
+
+                result[i] = NUMTOCHAR(temp);
+            }
+
+            if (carry != 0) {
+                result[i]--;
+                if (CHARTONUM(int, result[i]) == 0)
+                    calMax--;
+            }
+
+            result[numLength - 1] = signValue;
+
         }
 
         return calMax;
     }
 };
 
+#ifdef DEBUG
 int main(void)
 {
     BigInteger bi(123456);
-    BigInteger bi1(23);
+    BigInteger bi1(82323);
     BigInteger added;
 
     bi.showNumber();
@@ -137,5 +193,13 @@ int main(void)
     added.addAndSave(bi, bi1);
     added.showNumber();
 
+    bi.setNumber(-543);
+    bi1.setNumber(-1837);
+
+    cout << "ADD2 --------------" << endl;
+    added.addAndSave(bi, bi1);
+    added.showNumber();
+
     return 0;
 }
+#endif
