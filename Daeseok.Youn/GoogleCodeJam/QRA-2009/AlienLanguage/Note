@@ -1,0 +1,31 @@
+1. save all strings with "D" Lines to vector<string>
+2. Make 2D array for saving pattern.
+  Max length of string is 15, the number of alphabet is 26.
+  (alphabet[15][26] boolean array)
+  e.g) input string is '(ab)b(ca)'
+   - (ab)
+  alphabet[0][0] = true, character is used to index of array(char - 'a')
+  alphabet[0][1] = true,
+   - b
+  alphabet[1][1] = true,
+   - (ca)
+  alphabet[2][2] = true,
+  alphabet[2][0] = true
+
+2. Each testcase is parsed:
+   a. read one character
+   b. if the character is '(', set boolean variable to true, read next one.
+   c. if the character is ')', increase first index of array, and also increase
+      string position.
+   d. if it is a alphabet character, set true with index and string position.
+
+3. After each testcase is parsed.
+   a. traverse all of string in vector(1)
+   b. a string can be matched with array.
+   e.g) used array in (2)
+     abc can be checked:
+     alphabet[0][0] == true (a is first character and the index is from 'a' - 'a')
+     alphabet[1][1] == true
+     alphabet[2][2] == true
+     So all of character from "abc" gets "true" value.
+     Then count value will be incresed.
