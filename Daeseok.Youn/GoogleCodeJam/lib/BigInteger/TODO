@@ -1,0 +1,6 @@
+1. There are some issues for this.
+  - Double free memory after implementing operator=();
+2. Need to use operator+ / operator* and so on instead of implementing
+  - specific method like internalAdd()
+3. good reference
+  - https://mattmccutchen.net/bigint/
