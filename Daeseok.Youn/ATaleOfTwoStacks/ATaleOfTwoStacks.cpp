@@ -11,38 +11,28 @@ class MyQueue {
 
     public:
         stack<int> stack_newest_on_top, stack_oldest_on_top;
+        int popCount;
+
+        MyQueue() {
+            popCount = 0;
+        };
+
         void push(int x) {
             stack_newest_on_top.push(x);
-
-            stack<int> temp = stack_newest_on_top;
-
-            while (!stack_oldest_on_top.empty()) {
-                stack_oldest_on_top.pop();
-            }
-
-            while (!temp.empty()) {
-                stack_oldest_on_top.push(temp.top());
-                temp.pop();
-            }
         }
 
         void pop() {
-            stack_oldest_on_top.pop();
-
-            stack<int> temp = stack_oldest_on_top;
-
-            while (!stack_newest_on_top.empty()) {
-                stack_newest_on_top.pop();
-            }
-
-            while (!temp.empty()) {
-                stack_newest_on_top.push(temp.top());
-                temp.pop();
-            }
+            popCount++;
         }
 
         int front() {
-            return stack_oldest_on_top.top();
+            stack<int> temp = stack_newest_on_top;
+
+            while (temp.size() - popCount > 1) {
+                temp.pop();
+            }
+
+            return temp.top();
         }
 };
 
