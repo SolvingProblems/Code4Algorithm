@@ -21,34 +21,36 @@ public class imJin {
       correctOrder.put(input.next(), index++);
     }
 
-    /*
-     * Debug print
-    Iterator<String> iter = correctOrder.keySet().iterator();
-    while (iter.hasNext()) {
-      String key = iter.next();
-      System.out.print(key + " " + correctOrder.get(key));
-    }
-    System.out.println();
-    */
-
     index = 0;
     while (index++ < numOfWars) {
       testStr.add(input.next());
     }
 
-    for (int i = 0; i < testStr.size(); i++) {
-      for (int j = i + 1; j < testStr.size(); j++) {
-        if (correctOrder.get(testStr.get(i)) < correctOrder.get(testStr.get(j)))
+    if (numOfWars > 2) {
+      for (int i = 0; i < testStr.size(); i++) {
+        String first = testStr.get(i);
+        for (int j = i + 1; j < testStr.size(); j++) {
+          String second = testStr.get(j);
+          if (correctOrder.containsKey(first) &&
+              correctOrder.containsKey(second) &&
+              (correctOrder.get(testStr.get(i)) < correctOrder.get(testStr.get(j))))
+            score++;
+        }
+      }
+    } else {
+      int k = 0;
+      while (k < testStr.size()) {
+        if (correctOrder.containsKey(testStr.get(k)) &&
+            correctOrder.get(testStr.get(k)) == k)
           score++;
+        k++;
       }
     }
-    System.out.println(score + "/" + ((int)(numOfWars * (numOfWars/2))));
-    /*
-     * Debug print
-    for (int i = 0; i < testStr.size(); i++) {
-      System.out.print(testStr.get(i) + " ");
-    }
-    System.out.println();
-    */
+
+    int total = ((int)(numOfWars * (numOfWars - 1)/2));
+    if (total == 0)
+      total = 1;
+
+    System.out.println(score + "/" + total);
   }
 }
