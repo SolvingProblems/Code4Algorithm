@@ -1,0 +1,22 @@
+
+  > Run 3: Execution error: Your program did not produce an answer
+        that was judged as correct. The program stopped at 0.166 seconds;
+        it used 62920 KB of memory. At character number 1, your answer
+        says '2' while the correct answer says '6'. 
+
+        Here are the respective outputs:
+        ----- our output ---------
+        6
+        ---- your output ---------
+        2
+        --------------------------
+
+        ------ Data for Run 3 [length=37 bytes] ------
+        6 
+        1 15 
+        20 15 
+        17 11 
+        22 21 
+        25 11 
+        20 17 
+        --------------
