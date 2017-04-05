@@ -57,7 +57,7 @@ public class ariprog {
       int p = 0, q = 0;
       int max = 0;
 
-      TreeSet<Integer> bisquares = new TreeSet<Integer>();
+      boolean [] bisquares = new boolean[125002];
       List<Pair> pairs = new ArrayList<Pair>();
 
       for (p = 0; p <= M; p++) {
@@ -67,35 +67,20 @@ public class ariprog {
           if (max < temp)
             max = temp;
 
-          bisquares.add(temp);
+          bisquares[temp] = true;
         }
       }
 
-      Iterator<Integer> iter = bisquares.iterator();
-
-      int idx = 0;
-
-      while (iter.hasNext() &&
-             idx++ <= (bisquares.size() - N)) {
-        int start = iter.next();
-//        System.out.println("start : " + start);
-        int c;
-
-        for (int d = 1; d <= (M * M); d++) {
-          int temp = start;
-
-          if (temp + d >= max)
-            break;
-
+      for (int d = 1; d <= (M * M * 2)/(N-1); d++) {
+        for (int a = 0; a <= (M * M); a++) {
+          int c;
           for (c = 0; c < N; c++) {
-            if (!bisquares.contains(temp))
+            if (!bisquares[a + c * d])
               break;
-
-            temp += d;
           }
 
           if (c >= N)
-            pairs.add(new Pair(start, d));
+            pairs.add(new Pair(a, d));
         }
       }
 
